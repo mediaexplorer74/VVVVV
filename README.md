@@ -5,7 +5,7 @@ My goal was to RnD (explore, re-learn foggoten...) some C++ features and SDL2(_m
 
 ## Screenshots
 ![Shot 1](Images/shot1.png)
-![Shot 2](Images/shot1.png)
+![Shot 2](Images/shot2.png)
 
 ## Build instructions
 You are able to build through Visual Studio 2022 (but only x64 is currently tested... howover, min os build 15063.. so, ARM may be ok...) 
