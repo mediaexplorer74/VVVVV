@@ -488,7 +488,8 @@ void inline fixedloop()
         }
     }
 
-    if(!key.isActive)
+    //FOR DEBUG : if (1==0)
+    if (!key.isActive)
     {
         Mix_Pause(-1);
         Mix_PauseMusic();

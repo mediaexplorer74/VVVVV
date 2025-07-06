@@ -1639,29 +1639,51 @@ void titleinput()
 
     if (graphics.flipmode)
     {
-        if (key.isDown(KEYBOARD_LEFT) || key.isDown(KEYBOARD_DOWN) || key.isDown(KEYBOARD_a) ||  key.isDown(KEYBOARD_s) || key.controllerWantsRight(true)) game.press_left = true;
-        if (key.isDown(KEYBOARD_RIGHT) || key.isDown(KEYBOARD_UP)  || key.isDown(KEYBOARD_d) ||  key.isDown(KEYBOARD_w) || key.controllerWantsLeft(true)) game.press_right = true;
+        if (key.isDown(KEYBOARD_LEFT) || key.isDown(KEYBOARD_DOWN) || key.isDown(KEYBOARD_a) 
+            ||  key.isDown(KEYBOARD_s) || key.controllerWantsRight(true)
+			|| game.press_up || key.mouse_swipe_up || key.mouse_swipe_left || key.touch_swipe_up || key.touch_swipe_left
+            ) 
+            game.press_left = true;
+
+        if (key.isDown(KEYBOARD_RIGHT) || key.isDown(KEYBOARD_UP)  || key.isDown(KEYBOARD_d)
+            ||  key.isDown(KEYBOARD_w) || key.controllerWantsLeft(true)
+            || game.press_down || key.mouse_swipe_down || key.mouse_swipe_right || key.touch_swipe_down || key.touch_swipe_right
+            )
+            game.press_right = true;
     }
     else
     {
-        if (key.isDown(KEYBOARD_LEFT) || key.isDown(KEYBOARD_UP) || key.isDown(KEYBOARD_a) ||  key.isDown(KEYBOARD_w) || key.controllerWantsLeft(true))
+        if (key.isDown(KEYBOARD_LEFT) || key.isDown(KEYBOARD_UP) || key.isDown(KEYBOARD_a) 
+            ||  key.isDown(KEYBOARD_w) || key.controllerWantsLeft(true)
+            || game.press_up || key.mouse_swipe_up || key.mouse_swipe_left || key.touch_swipe_up || key.touch_swipe_left)
         {
             game.press_left = true;
         }
-        if (key.isDown(KEYBOARD_RIGHT) || key.isDown(KEYBOARD_DOWN)  || key.isDown(KEYBOARD_d) ||  key.isDown(KEYBOARD_s) || key.controllerWantsRight(true))
+
+        if (key.isDown(KEYBOARD_RIGHT) || key.isDown(KEYBOARD_DOWN)  || key.isDown(KEYBOARD_d)
+            ||  key.isDown(KEYBOARD_s) || key.controllerWantsRight(true)
+            || game.press_down || key.mouse_swipe_down || key.mouse_swipe_right || key.touch_swipe_down || key.touch_swipe_right
+            )
         {
             game.press_right = true;
         }
     }
-    if (key.isDown(KEYBOARD_z) || key.isDown(KEYBOARD_SPACE) || key.isDown(KEYBOARD_v) || key.isDown(game.controllerButton_flip)) game.press_action = true;
+
+    if (key.isDown(KEYBOARD_z) || key.isDown(KEYBOARD_SPACE) 
+        || key.isDown(KEYBOARD_v) || key.isDown(game.controllerButton_flip)
+        || key.touch_tap || key.mouse_tap || key.mouse_jump) 
+        game.press_action = true;
+
     //|| key.isDown(KEYBOARD_UP) || key.isDown(KEYBOARD_DOWN)) game.press_action = true; //on menus, up and down don't work as action
-    if (key.isDown(KEYBOARD_ENTER)) game.press_map = true;
+    if (key.isDown(KEYBOARD_ENTER)) 
+        game.press_map = true;
 
     //In the menu system, all keypresses are single taps rather than holds. Therefore this test has to be done for all presses
     if (!game.press_action && !game.press_left && !game.press_right) game.jumpheld = false;
     if (!game.press_map) game.mapheld = false;
 
-    if (!game.jumpheld && graphics.fademode==0)
+    // TEMP / DEBUG
+    if (/*!game.jumpheld &&*/ graphics.fademode == 0)
     {
         if (game.press_action || game.press_left || game.press_right || game.press_map)
         {
@@ -1733,28 +1755,28 @@ void gameinput()
     // Touch/mouse gesture input
     if (key.touch_swipe_left || key.mouse_swipe_left) {
         game.press_left = true;
-        key.ClearTouchGesture();
-        key.ClearMouseGesture();
+       // key.ClearTouchGesture();
+       // key.ClearMouseGesture();
     }
     if (key.touch_swipe_right || key.mouse_swipe_right) {
         game.press_right = true;
-        key.ClearTouchGesture();
-        key.ClearMouseGesture();
+      //  key.ClearTouchGesture();
+      //  key.ClearMouseGesture();
     }
     if (key.touch_swipe_up || key.mouse_swipe_up) {
-        game.press_action = true;
-        key.ClearTouchGesture();
-        key.ClearMouseGesture();
+        //game.press_action = true;
+      //  key.ClearTouchGesture();
+      //  key.ClearMouseGesture();
     }
     if (key.touch_swipe_down || key.mouse_swipe_down) {
-        game.press_action = true;
-        key.ClearTouchGesture();
-        key.ClearMouseGesture();
+        //game.press_action = true;
+        //key.ClearTouchGesture();
+        //key.ClearMouseGesture();
     }
     if (key.touch_tap || key.mouse_tap || key.mouse_jump) {
         game.press_action = true;
-        key.ClearTouchGesture();
-        key.ClearMouseGesture();
+        //key.ClearTouchGesture();
+        //key.ClearMouseGesture();
     }
     //TODO mouse input
     //game.mx = (mouseX / 2);
@@ -1766,16 +1788,23 @@ void gameinput()
         game.press_right = false;
         game.press_action = false;
 
-        if (key.isDown(KEYBOARD_LEFT) || key.isDown(KEYBOARD_a) || key.controllerWantsLeft(false))
+        if (key.isDown(KEYBOARD_LEFT) || key.isDown(KEYBOARD_a) || key.controllerWantsLeft(false)
+            || key.touch_swipe_left || key.mouse_swipe_left
+            )
         {
             game.press_left = true;
         }
-        if (key.isDown(KEYBOARD_RIGHT) || key.isDown(KEYBOARD_d) || key.controllerWantsRight(false))
+        if (key.isDown(KEYBOARD_RIGHT) || key.isDown(KEYBOARD_d) || key.controllerWantsRight(false)
+            || key.touch_swipe_right || key.mouse_swipe_right
+            )
         {
             game.press_right = true;
         }
         if (key.isDown(KEYBOARD_z) || key.isDown(KEYBOARD_SPACE) || key.isDown(KEYBOARD_v)
-                || key.isDown(KEYBOARD_UP) || key.isDown(KEYBOARD_DOWN) || key.isDown(KEYBOARD_w) || key.isDown(KEYBOARD_s)|| key.isDown(game.controllerButton_flip))
+                || key.isDown(KEYBOARD_UP) || key.isDown(KEYBOARD_DOWN) 
+            || key.isDown(KEYBOARD_w) || key.isDown(KEYBOARD_s) || key.isDown(game.controllerButton_flip)
+            || key.touch_tap || key.mouse_tap || key.mouse_jump
+            )
         {
             game.press_action = true;
         };
@@ -1793,7 +1822,11 @@ void gameinput()
         {
             game.press_action = false;
             if (key.isDown(KEYBOARD_z) || key.isDown(KEYBOARD_SPACE) || key.isDown(KEYBOARD_v)
-                    || key.isDown(KEYBOARD_UP) || key.isDown(KEYBOARD_DOWN) || key.isDown(KEYBOARD_w) || key.isDown(KEYBOARD_s) || key.isDown(game.controllerButton_flip)) game.press_action = true;
+               || key.isDown(KEYBOARD_UP) || key.isDown(KEYBOARD_DOWN) || key.isDown(KEYBOARD_w) || key.isDown(KEYBOARD_s) 
+                || key.isDown(game.controllerButton_flip)
+                || key.touch_tap || key.mouse_tap || key.mouse_jump
+                ) 
+                game.press_action = true;
         }
 
         if (game.press_action && !game.jumpheld)
@@ -1815,7 +1848,8 @@ void gameinput()
         }
     }
 
-    if (!game.press_map) game.mapheld = false;
+    if (!game.press_map) 
+        game.mapheld = false;
 
     if (game.intimetrial && graphics.fademode == 1 && game.quickrestartkludge)
     {
@@ -2119,7 +2153,8 @@ void gameinput()
         }
     }
 
-    if (game.deathseq == -1 && (key.isDown(SDLK_r) || key.isDown(game.controllerButton_restart)) && !game.nodeathmode)// && map.custommode) //Have fun glitchrunners!
+    if (game.deathseq == -1 && (key.isDown(SDLK_r) || key.isDown(game.controllerButton_restart))
+        && !game.nodeathmode)// && map.custommode) //Have fun glitchrunners!
     {
         game.deathseq = 30;
     }
@@ -2204,26 +2239,64 @@ void mapinput()
     && ((!game.glitchrunnermode && game.fadetomenudelay <= 0 && game.fadetolabdelay <= 0)
     || graphics.fademode == 0))
     {
+        // Mouse swipe/menu navigation
+        if (key.mouse_swipe_left) 
+        {
+            game.press_left = true;
+            key.ClearMouseGesture();
+        }
+        if (key.mouse_swipe_right) 
+        {
+            game.press_right = true;
+            key.ClearMouseGesture();
+        }
+        if (key.mouse_swipe_up) 
+        {
+            // In menus, up usually means previous
+            game.press_up = true;
+            key.ClearMouseGesture();
+        }
+        if (key.mouse_swipe_down) 
+        {
+            // In menus, down usually means next
+            game.press_down = true;
+            key.ClearMouseGesture();
+        }
+        // Keyboard/controller as before
         if (graphics.flipmode)
         {
-            if (key.isDown(KEYBOARD_LEFT) || key.isDown(KEYBOARD_DOWN) || key.isDown(KEYBOARD_a) ||  key.isDown(KEYBOARD_s) || key.controllerWantsLeft(true) ) game.press_left = true;
-            if (key.isDown(KEYBOARD_RIGHT) || key.isDown(KEYBOARD_UP) || key.isDown(KEYBOARD_d) ||  key.isDown(KEYBOARD_w) || key.controllerWantsRight(true)) game.press_right = true;
+            if (key.isDown(KEYBOARD_LEFT) || key.isDown(KEYBOARD_DOWN) || key.isDown(KEYBOARD_a)
+                ||  key.isDown(KEYBOARD_s) || key.controllerWantsLeft(true) 
+                || game.press_up  ) 
+                game.press_left = true;
+            if (key.isDown(KEYBOARD_RIGHT) || key.isDown(KEYBOARD_UP) || key.isDown(KEYBOARD_d) 
+                ||  key.isDown(KEYBOARD_w) || key.controllerWantsRight(true)
+                || game.press_down ) 
+                game.press_right = true;
         }
         else
         {
-            if (key.isDown(KEYBOARD_LEFT) || key.isDown(KEYBOARD_UP) || key.isDown(KEYBOARD_a) ||  key.isDown(KEYBOARD_w)|| key.controllerWantsLeft(true))
+            if (key.isDown(KEYBOARD_LEFT) || key.isDown(KEYBOARD_UP) || key.isDown(KEYBOARD_a) 
+                ||  key.isDown(KEYBOARD_w)|| key.controllerWantsLeft(true)
+                || game.press_up )
             {
                 game.press_left = true;
             }
-            if (key.isDown(KEYBOARD_RIGHT) || key.isDown(KEYBOARD_DOWN) || key.isDown(KEYBOARD_d) ||  key.isDown(KEYBOARD_s)|| key.controllerWantsRight(true))
+            if (key.isDown(KEYBOARD_RIGHT) || key.isDown(KEYBOARD_DOWN) || key.isDown(KEYBOARD_d) 
+                ||  key.isDown(KEYBOARD_s)|| key.controllerWantsRight(true)
+                || game.press_down )
             {
                 game.press_right = true;
             }
         }
-        if (key.isDown(KEYBOARD_z) || key.isDown(KEYBOARD_SPACE) || key.isDown(KEYBOARD_v) || key.isDown(game.controllerButton_flip))
+
+        if (key.isDown(KEYBOARD_z) || key.isDown(KEYBOARD_SPACE) || key.isDown(KEYBOARD_v) 
+            || key.isDown(game.controllerButton_flip)
+            || key.touch_tap || key.mouse_tap || key.mouse_jump)
         {
             game.press_action = true;
         }
+
         if (game.menupage < 12 || (game.menupage >= 30 && game.menupage <= 33))
         {
             if (key.isDown(KEYBOARD_ENTER) || key.isDown(game.controllerButton_map) ) game.press_map = true;
@@ -2246,7 +2319,8 @@ void mapinput()
         }
         else
         {
-            if (key.isDown(KEYBOARD_ENTER) || key.isDown(27)|| key.isDown(game.controllerButton_map) ) game.press_map = true;
+            if (key.isDown(KEYBOARD_ENTER) || key.isDown(27)|| key.isDown(game.controllerButton_map) ) 
+                game.press_map = true;
         }
 
         //In the menu system, all keypresses are single taps rather than holds. Therefore this test has to be done for all presses
@@ -2457,11 +2531,22 @@ void teleporterinput()
 
     if(graphics.menuoffset==0)
     {
-        if (key.isDown(KEYBOARD_LEFT)|| key.isDown(KEYBOARD_a) || key.controllerWantsLeft(false) ) game.press_left = true;
-        if (key.isDown(KEYBOARD_RIGHT) || key.isDown(KEYBOARD_d)|| key.controllerWantsRight(false) ) game.press_right = true;
+        if (key.isDown(KEYBOARD_LEFT)|| key.isDown(KEYBOARD_a) || key.controllerWantsLeft(false) ) 
+            game.press_left = true;
+
+        if (key.isDown(KEYBOARD_RIGHT) || key.isDown(KEYBOARD_d)|| key.controllerWantsRight(false) ) 
+            game.press_right = true;
+
         if (key.isDown(KEYBOARD_z) || key.isDown(KEYBOARD_SPACE) || key.isDown(KEYBOARD_v)
-                || key.isDown(KEYBOARD_UP) || key.isDown(KEYBOARD_DOWN)||  key.isDown(KEYBOARD_w)||  key.isDown(KEYBOARD_s) || key.isDown(game.controllerButton_flip)) game.press_action = true;
-        if (key.isDown(KEYBOARD_ENTER) || key.isDown(game.controllerButton_map)) game.press_map = true;
+            || key.isDown(KEYBOARD_UP) || key.isDown(KEYBOARD_DOWN)
+            ||  key.isDown(KEYBOARD_w)||  key.isDown(KEYBOARD_s) 
+            || key.isDown(game.controllerButton_flip)
+            || key.touch_tap || key.mouse_tap || key.mouse_jump
+            ) 
+            game.press_action = true;
+
+        if (key.isDown(KEYBOARD_ENTER) || key.isDown(game.controllerButton_map)) 
+            game.press_map = true;
 
         //In the menu system, all keypresses are single taps rather than holds. Therefore this test has to be done for all presses
         if (!game.press_action && !game.press_left && !game.press_right) game.jumpheld = false;
@@ -2592,7 +2677,8 @@ void gamecompleteinput()
     map.bypos += map.bscroll;
     game.oldcreditposition = game.creditposition;
 
-    if (key.isDown(KEYBOARD_z) || key.isDown(KEYBOARD_SPACE) || key.isDown(KEYBOARD_v) || key.isDown(game.controllerButton_flip))
+    if (key.isDown(KEYBOARD_z) || key.isDown(KEYBOARD_SPACE) || key.isDown(KEYBOARD_v) || key.isDown(game.controllerButton_flip) 
+        || key.touch_tap || key.mouse_tap || key.mouse_jump )
     {
         game.creditposition -= 6;
         if (game.creditposition <= -Credits::creditmaxposition)
@@ -2634,7 +2720,9 @@ void gamecompleteinput2()
     //Do this here because input comes first
     game.oldcreditposx = game.creditposx;
 
-    if (key.isDown(KEYBOARD_z) || key.isDown(KEYBOARD_SPACE) || key.isDown(KEYBOARD_v) || key.isDown(game.controllerButton_flip))
+    if (key.isDown(KEYBOARD_z) || key.isDown(KEYBOARD_SPACE) || key.isDown(KEYBOARD_v) || key.isDown(game.controllerButton_flip)
+        || key.touch_tap || key.mouse_tap || key.mouse_jump
+        )
     {
         game.creditposx++;
         game.oldcreditposx++;

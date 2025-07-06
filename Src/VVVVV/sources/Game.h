@@ -344,7 +344,7 @@ public:
     int activeactivity, act_fade;
     int prev_act_fade;
 
-    bool press_left, press_right, press_action, press_map;
+    bool press_left, press_right, press_action, press_map, press_up, press_down; //ress_up, press_down -- my
 
     //Some stats:
     int totalflips;

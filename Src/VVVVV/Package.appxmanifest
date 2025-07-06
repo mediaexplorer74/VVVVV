@@ -9,9 +9,9 @@
   <Identity
     Name="427dcaab-9254-4c48-bf6e-db5aa10789e1"
     Publisher="CN=Admin"
-    Version="1.0.1.0" />
+    Version="1.0.2.0" />
 
-  <mp:PhoneIdentity PhoneProductId="427dcaab-9254-4c48-bf6e-db5aa10789e1" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="427dcaab-9254-4c48-bf6e-db5aa10899e1" PhonePublisherId="00263601-0004-5008-2025-005500000077"/>
 
   <Properties>
     <DisplayName>winrt</DisplayName>
