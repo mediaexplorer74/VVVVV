@@ -9,7 +9,7 @@ My goal was to RnD (explore, re-learn foggoten...) some C++ features and SDL2(_m
 ![](Images/sshot02.png)
 
 ## Whats new?
-- Experimental touchscreen?mouse game input realized (in addition to keyboard input)
+- Experimental touchscreen&mouse game input realized (in addition to keyboard input)
 
 ## Build instructions
 You are able to build through Visual Studio 2022 (but only x64 is currently tested... howover, min os build 15063.. so, ARM may be ok...) 
@@ -26,7 +26,7 @@ https://github.com/TerryCavanagh/VVVVVV Non-UWP "original remake" of Terry Cavan
 
 ## ..
 
-AS IS. No suppor. SDL2-Mixer/WinRT RnD only. DIY.
+AS IS. No support. SDL2-Mixer/WinRT RnD only. DIY.
 
 ## .
 
