@@ -1730,6 +1730,32 @@ void titleinput()
 
 void gameinput()
 {
+    // Touch/mouse gesture input
+    if (key.touch_swipe_left || key.mouse_swipe_left) {
+        game.press_left = true;
+        key.ClearTouchGesture();
+        key.ClearMouseGesture();
+    }
+    if (key.touch_swipe_right || key.mouse_swipe_right) {
+        game.press_right = true;
+        key.ClearTouchGesture();
+        key.ClearMouseGesture();
+    }
+    if (key.touch_swipe_up || key.mouse_swipe_up) {
+        game.press_action = true;
+        key.ClearTouchGesture();
+        key.ClearMouseGesture();
+    }
+    if (key.touch_swipe_down || key.mouse_swipe_down) {
+        game.press_action = true;
+        key.ClearTouchGesture();
+        key.ClearMouseGesture();
+    }
+    if (key.touch_tap || key.mouse_tap || key.mouse_jump) {
+        game.press_action = true;
+        key.ClearTouchGesture();
+        key.ClearMouseGesture();
+    }
     //TODO mouse input
     //game.mx = (mouseX / 2);
     //game.my = (mouseY / 2);

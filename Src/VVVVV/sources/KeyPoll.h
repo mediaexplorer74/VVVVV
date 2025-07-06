@@ -33,6 +33,35 @@ enum Kybrd
 class KeyPoll
 {
 public:
+    // Touch gesture tracking
+    bool touch_active = false;
+    float touch_start_x = 0.0f, touch_start_y = 0.0f;
+    Uint32 touch_start_time = 0;
+    float touch_end_x = 0.0f, touch_end_y = 0.0f;
+    Uint32 touch_end_time = 0;
+    bool touch_swipe_left = false;
+    bool touch_swipe_right = false;
+    bool touch_swipe_up = false;
+    bool touch_swipe_down = false;
+    bool touch_tap = false;
+
+    // Mouse gesture tracking
+    bool mouse_drag_active = false;
+    int mouse_start_x = 0, mouse_start_y = 0;
+    Uint32 mouse_start_time = 0;
+    int mouse_end_x = 0, mouse_end_y = 0;
+    Uint32 mouse_end_time = 0;
+    bool mouse_swipe_left = false;
+    bool mouse_swipe_right = false;
+    bool mouse_swipe_up = false;
+    bool mouse_swipe_down = false;
+    bool mouse_tap = false;
+    bool mouse_jump = false;
+
+    // Utility for clearing gesture flags
+    void ClearTouchGesture();
+    void ClearMouseGesture();
+public:
 	std::map<SDL_Keycode, bool> keymap;
 
 	bool isActive;

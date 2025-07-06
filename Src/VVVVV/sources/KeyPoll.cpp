@@ -4,6 +4,7 @@
 #include <SDL_mixer.h>
 #include <stdio.h>
 #include <string.h>
+
 #include <utf8/unchecked.h>
 
 #include "KeyPoll.h"
@@ -82,6 +83,13 @@ bool KeyPoll::textentry()
 	return SDL_IsTextInputActive() == SDL_TRUE;
 }
 
+void KeyPoll::ClearTouchGesture() {
+    touch_swipe_left = touch_swipe_right = touch_swipe_up = touch_swipe_down = touch_tap = false;
+}
+void KeyPoll::ClearMouseGesture() {
+    mouse_swipe_left = mouse_swipe_right = mouse_swipe_up = mouse_swipe_down = mouse_tap = mouse_jump = false;
+}
+
 void KeyPoll::Poll()
 {
 	bool altpressed = false;
@@ -151,6 +159,11 @@ void KeyPoll::Poll()
 		case SDL_MOUSEMOTION:
 			mx = evt.motion.x;
 			my = evt.motion.y;
+			if (mouse_drag_active) {
+				mouse_end_x = evt.motion.x;
+				mouse_end_y = evt.motion.y;
+				mouse_end_time = SDL_GetTicks();
+			}
 			break;
 		case SDL_MOUSEBUTTONDOWN:
 			switch (evt.button.button)
@@ -159,6 +172,10 @@ void KeyPoll::Poll()
 				mx = evt.button.x;
 				my = evt.button.y;
 				leftbutton = 1;
+				mouse_drag_active = true;
+				mouse_start_x = evt.button.x;
+				mouse_start_y = evt.button.y;
+				mouse_start_time = SDL_GetTicks();
 				break;
 			case SDL_BUTTON_RIGHT:
 				mx = evt.button.x;
@@ -179,6 +196,28 @@ void KeyPoll::Poll()
 				mx = evt.button.x;
 				my = evt.button.y;
 				leftbutton=0;
+				mouse_drag_active = false;
+				mouse_end_x = evt.button.x;
+				mouse_end_y = evt.button.y;
+				mouse_end_time = SDL_GetTicks();
+				{
+					int dx = mouse_end_x - mouse_start_x;
+					int dy = mouse_end_y - mouse_start_y;
+					Uint32 dt = mouse_end_time - mouse_start_time;
+					const int SWIPE_THRESHOLD = 50;
+					const Uint32 TAP_TIME = 200;
+					ClearMouseGesture();
+					if (abs(dx) < SWIPE_THRESHOLD && abs(dy) < SWIPE_THRESHOLD && dt < TAP_TIME) {
+						mouse_tap = true;
+						mouse_jump = true;
+					} else if (abs(dx) > abs(dy) && abs(dx) > SWIPE_THRESHOLD) {
+						if (dx > 0) mouse_swipe_right = true;
+						else mouse_swipe_left = true;
+					} else if (abs(dy) > SWIPE_THRESHOLD) {
+						if (dy > 0) mouse_swipe_down = true;
+						else mouse_swipe_up = true;
+					}
+				}
 				break;
 			case SDL_BUTTON_RIGHT:
 				mx = evt.button.x;
@@ -191,6 +230,40 @@ void KeyPoll::Poll()
 				middlebutton=0;
 				break;
 			}
+			break;
+
+		/* Touch Input */
+		case SDL_FINGERDOWN:
+			touch_active = true;
+			touch_start_x = evt.tfinger.x;
+			touch_start_y = evt.tfinger.y;
+			touch_start_time = SDL_GetTicks();
+			break;
+		case SDL_FINGERUP:
+			touch_active = false;
+			touch_end_x = evt.tfinger.x;
+			touch_end_y = evt.tfinger.y;
+			touch_end_time = SDL_GetTicks();
+			{
+				float dx = touch_end_x - touch_start_x;
+				float dy = touch_end_y - touch_start_y;
+				Uint32 dt = touch_end_time - touch_start_time;
+				const float SWIPE_THRESHOLD = 0.05f; // Normalized (0..1)
+				const Uint32 TAP_TIME = 200;
+				ClearTouchGesture();
+				if (fabs(dx) < SWIPE_THRESHOLD && fabs(dy) < SWIPE_THRESHOLD && dt < TAP_TIME) {
+					touch_tap = true;
+				} else if (fabs(dx) > fabs(dy) && fabs(dx) > SWIPE_THRESHOLD) {
+					if (dx > 0) touch_swipe_right = true;
+					else touch_swipe_left = true;
+				} else if (fabs(dy) > SWIPE_THRESHOLD) {
+					if (dy > 0) touch_swipe_down = true;
+					else touch_swipe_up = true;
+				}
+			}
+			break;
+		case SDL_FINGERMOTION:
+			// Optional: could update touch_end_x/y for live feedback
 			break;
 
 		/* Controller Input */

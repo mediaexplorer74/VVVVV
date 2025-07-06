@@ -5,6 +5,7 @@
 
 #include <stdio.h>
 #include <string>
+
 #include <utf8/unchecked.h>
 
 #include "vendor\physfs\physfs.h" /* FIXME: Abstract to FileSystemUtils! */

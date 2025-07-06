@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+
 #include <utf8/unchecked.h>
 
 #include "editor.h"
